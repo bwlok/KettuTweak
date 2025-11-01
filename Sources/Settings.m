@@ -9,7 +9,7 @@
 - (instancetype)initWithVersion:(NSString *)version {
     self = [super init];
     if (self) {
-        self.title = [NSString stringWithFormat:@"BTLoader v%@ Recovery Menu", version];
+        self.title = [NSString stringWithFormat:@"KettuTweak v%@ Recovery Menu", version];
     }
     return self;
 }
@@ -227,7 +227,7 @@
                                                                      URLQueryAllowedCharacterSet]];
 
     NSString *urlString = [NSString
-        stringWithFormat:@"https://github.com/CloudySn0w/BTLoader/issues/new?title=%@&body=%@",
+        stringWithFormat:@"https://github.com/C0C0B01/KettuTweak/issues/new?title=%@&body=%@",
                          encodedTitle, encodedBody];
     NSURL *url          = [NSURL URLWithString:urlString];
     [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];

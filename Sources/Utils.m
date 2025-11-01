@@ -156,7 +156,7 @@ void setCustomBundleURL(NSURL *url, UIViewController *presenter) {
 void resetCustomBundleURL(UIViewController *presenter) {
     LoaderConfig *config        = [LoaderConfig getLoaderConfig];
     config.customLoadUrlEnabled = NO;
-    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/btloader.js"];
+    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/kettu.js"];
     [config saveConfig];
     removeCachedBundle();
     gracefulExit(presenter);
@@ -246,7 +246,7 @@ void showBundleSelector(UIViewController *presenter) {
                                      preferredStyle:UIAlertControllerStyleAlert];
     [presenter presentViewController:loadingAlert animated:YES completion:nil];
 
-    NSURL *url = [NSURL URLWithString:@"https://api.github.com/repos/CloudySn0w/BTLoader/branches"];
+    NSURL *url = [NSURL URLWithString:@"https://api.github.com/repos/C0C0B01/KettuTweak/branches"];
     NSURLSession *session = [NSURLSession
         sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
@@ -324,7 +324,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
 
     NSString *commitsUrl = [NSString
         stringWithFormat:
-            @"https://api.github.com/repos/CloudySn0w/BTLoader/commits?sha=%@&per_page=10", branch];
+            @"https://api.github.com/repos/C0C0B01/KettuTweak/commits?sha=%@&per_page=10", branch];
     NSURL *commitsURL    = [NSURL URLWithString:commitsUrl];
 
     [[session
@@ -382,7 +382,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                                                        NSString *bundleUrl =
                                                                            [NSString
                                                                                stringWithFormat:
-                                                                                   @"https://raw.githubusercontent.com/CloudySn0w/BTLoader/%@/bundle.js",
+                                                                                   @"https://raw.githubusercontent.com/C0C0B01/KettuTweak/%@/bundle.js",
                                                                                    fullSha];
                                                                        NSURL *url = [NSURL
                                                                            URLWithString:bundleUrl];

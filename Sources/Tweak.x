@@ -243,7 +243,7 @@ id                    gBridge        = nil;
 {
     @autoreleasepool
     {
-        source = [NSURL URLWithString:@"btloader"];
+        source = [NSURL URLWithString:@"kettu"];
 
         NSString *install_prefix = @"/var/jb";
         isJailbroken             = [[NSFileManager defaultManager] fileExistsAtPath:install_prefix];

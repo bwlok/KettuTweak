@@ -4,10 +4,10 @@ INSTALL_TARGET_PROCESSES = Discord
 THEOS_PACKAGE_SCHEME = rootless
 FINALPACKAGE = 1
 
-include $(THEOS)/makefiles/common.mk
+include /home/cocobo1/theos/makefiles/common.mk
 
-TWEAK_NAME = BTLoader
-BUNDLE_NAME = BTLoaderResources
+TWEAK_NAME = KettuTweak
+BUNDLE_NAME = KettuTweakResources
 
 BTLoader_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
 BTLoader_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers

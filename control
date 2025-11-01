@@ -1,11 +1,11 @@
-Package: com.cloudysnow.btloader
-Name: BTLoader
+Package: cocobo1.kettu.tweak
+Name: KettuTweak
 Version: 1.0.0
 Architecture: iphoneos-arm
-Description: A client modification for Discord's mobile app.
-Maintainer: CloudySn0w
-Author: CloudySn0w
-Icon: https://avatars.githubusercontent.com/u/186649748
+Description: A tweak to inject Kettu into Discord
+Maintainer: cocobo1
+Author: cocobo1
+Icon: https://codeberg.org/cocobo1/Kettu/raw/branch/main/src/assets/icons/kettu.png
 Section: Tweaks
 Depends: mobilesubstrate (>= 0.9.5000)
-Conflicts: app.enmity, mod.vendetta, app.unbound
+Conflicts: app.enmity, mod.vendetta, app.unbound, com.cloudysnow.btloader

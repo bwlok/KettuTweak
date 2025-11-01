@@ -8,7 +8,7 @@
     self = [super init];
     if (self) {
         self.customLoadUrlEnabled = NO;
-        self.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/btloader.js"];
+        self.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/kettu.js"];
     }
     return self;
 }
@@ -51,7 +51,7 @@
 + (instancetype)defaultConfig {
     LoaderConfig *config        = [[LoaderConfig alloc] init];
     config.customLoadUrlEnabled = NO;
-    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/btloader.js"];
+    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/kettu.js"];
     return config;
 }
 
