@@ -36,7 +36,7 @@ static void swizzleRawColorMethods(void) {
     if (!targetClass)
         return;
 
-    BTLoaderLog(@"Processing %lu raw color methods", (unsigned long)gRawColors.count);
+    KettuTweakLog(@"Processing %lu raw color methods", (unsigned long)gRawColors.count);
 
     for (NSString *key in gRawColors) {
         SEL selector          = NSSelectorFromString(key);
@@ -47,7 +47,7 @@ static void swizzleRawColorMethods(void) {
             UIColor *color     = hexToUIColor(hexColor);
             if (color && ![loggedColors containsObject:key]) {
                 [loggedColors addObject:key];
-                BTLoaderLog(@"Applied raw color: %@ -> %@", key, hexColor);
+                KettuTweakLog(@"Applied raw color: %@ -> %@", key, hexColor);
             }
             return color ?: [UIColor clearColor];
         });
@@ -70,7 +70,7 @@ static void swizzleDCDThemeColorMethods(void) {
     if (!methods)
         return;
 
-    BTLoaderLog(@"Processing %lu semantic color methods", (unsigned long)gSemanticColors.count);
+    KettuTweakLog(@"Processing %lu semantic color methods", (unsigned long)gSemanticColors.count);
     loggedColors = [NSMutableSet new];
 
     for (unsigned int i = 0; i < methodCount; i++) {
@@ -95,7 +95,7 @@ static void swizzleDCDThemeColorMethods(void) {
                     if (color) {
                         if (![loggedColors containsObject:name]) {
                             [loggedColors addObject:name];
-                            BTLoaderLog(@"Applied theme color: %@ -> %@", name, colors[themeIndex]);
+                            KettuTweakLog(@"Applied theme color: %@ -> %@", name, colors[themeIndex]);
                         }
                         return color;
                     }
@@ -114,7 +114,7 @@ void initializeThemeColors(NSDictionary *semanticColors, NSDictionary *rawColors
     if (!semanticColors || !rawColors)
         return;
 
-    BTLoaderLog(@"Initializing theme (%lu semantic colors, %lu raw colors)",
+    KettuTweakLog(@"Initializing theme (%lu semantic colors, %lu raw colors)",
              (unsigned long)semanticColors.count, (unsigned long)rawColors.count);
 
     gSemanticColors = [semanticColors copy];

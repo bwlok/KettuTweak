@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface BTLoaderSettingsViewController
+@interface KettuTweakSettingsViewController
     : UIViewController <UITableViewDelegate, UITableViewDataSource>
 - (instancetype)initWithVersion:(NSString *)version;
 @end

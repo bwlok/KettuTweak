@@ -4,7 +4,7 @@
 #import "Utils.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
-@implementation BTLoaderSettingsViewController
+@implementation KettuTweakSettingsViewController
 
 - (instancetype)initWithVersion:(NSString *)version {
     self = [super init];
@@ -338,8 +338,8 @@
 }
 
 void showSettingsSheet(void) {
-    BTLoaderSettingsViewController *settingsVC =
-        [[BTLoaderSettingsViewController alloc] initWithVersion:PACKAGE_VERSION];
+    KettuTweakSettingsViewController *settingsVC =
+        [[KettuTweakSettingsViewController alloc] initWithVersion:PACKAGE_VERSION];
 
     UINavigationController *navController =
         [[UINavigationController alloc] initWithRootViewController:settingsVC];

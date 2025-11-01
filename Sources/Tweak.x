@@ -9,7 +9,7 @@
 #import "Utils.h"
 
 static NSURL         *source;
-static NSString      *btloaderPatchesBundlePath;
+static NSString      *KettuTweakPatchesBundlePath;
 static NSURL         *pyoncordDirectory;
 static LoaderConfig  *loaderConfig;
 static NSTimeInterval shakeStartTime = 0;
@@ -26,28 +26,28 @@ id                    gBridge        = nil;
     }
 
     gBridge = self;
-    BTLoaderLog(@"Stored bridge reference: %@", gBridge);
+    KettuTweakLog(@"Stored bridge reference: %@", gBridge);
 
-    NSBundle *btloaderPatchesBundle = [NSBundle bundleWithPath:btloaderPatchesBundlePath];
-    if (!btloaderPatchesBundle)
+    NSBundle *KettuTweakPatchesBundle = [NSBundle bundleWithPath:KettuTweakPatchesBundlePath];
+    if (!KettuTweakPatchesBundle)
     {
-        BTLoaderLog(@"Failed to load BTLoaderPatches bundle from path: %@", btloaderPatchesBundlePath);
+        KettuTweakLog(@"Failed to load KettuTweakPatches bundle from path: %@", KettuTweakPatchesBundlePath);
         showErrorAlert(@"Loader Error",
                        @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
-    NSURL *patchPath = [btloaderPatchesBundle URLForResource:@"payload-base" withExtension:@"js"];
+    NSURL *patchPath = [KettuTweakPatchesBundle URLForResource:@"payload-base" withExtension:@"js"];
     if (!patchPath)
     {
-        BTLoaderLog(@"Failed to find payload-base.js in bundle");
+        KettuTweakLog(@"Failed to find payload-base.js in bundle");
         showErrorAlert(@"Loader Error",
                        @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
     NSData *patchData = [NSData dataWithContentsOfURL:patchPath];
-    BTLoaderLog(@"Injecting loader");
+    KettuTweakLog(@"Injecting loader");
     %orig(patchData, source, YES);
 
     __block NSData *bundle =
@@ -60,13 +60,13 @@ id                    gBridge        = nil;
     if (loaderConfig.customLoadUrlEnabled && loaderConfig.customLoadUrl)
     {
         bundleUrl = loaderConfig.customLoadUrl;
-        BTLoaderLog(@"Using custom load URL: %@", bundleUrl.absoluteString);
+        KettuTweakLog(@"Using custom load URL: %@", bundleUrl.absoluteString);
     }
     else
     {
         bundleUrl = [NSURL
             URLWithString:@"https://codeberg.org/cocobo1/Kettu/raw/branch/dist/kettu.min.js"];
-        BTLoaderLog(@"Using default bundle URL: %@", bundleUrl.absoluteString);
+        KettuTweakLog(@"Using default bundle URL: %@", bundleUrl.absoluteString);
     }
 
     NSMutableURLRequest *bundleRequest =
@@ -125,13 +125,13 @@ id                    gBridge        = nil;
                                                                     error:&jsonError];
         if (!jsonError)
         {
-            BTLoaderLog(@"Loading theme data...");
+            KettuTweakLog(@"Loading theme data...");
             if (themeDict[@"data"])
             {
                 NSDictionary *data = themeDict[@"data"];
                 if (data[@"semanticColors"] && data[@"rawColors"])
                 {
-                    BTLoaderLog(@"Initializing theme colors from theme data");
+                    KettuTweakLog(@"Initializing theme colors from theme data");
                     initializeThemeColors(data[@"semanticColors"], data[@"rawColors"]);
                 }
             }
@@ -144,12 +144,12 @@ id                    gBridge        = nil;
         }
         else
         {
-            BTLoaderLog(@"Error parsing theme JSON: %@", jsonError);
+            KettuTweakLog(@"Error parsing theme JSON: %@", jsonError);
         }
     }
     else
     {
-        BTLoaderLog(@"No theme data found at path: %@",
+        KettuTweakLog(@"No theme data found at path: %@",
                  [pyoncordDirectory URLByAppendingPathComponent:@"current-theme.json"]);
     }
 
@@ -163,14 +163,14 @@ id                    gBridge        = nil;
                                                                    error:&jsonError];
         if (!jsonError && fontDict[@"main"])
         {
-            BTLoaderLog(@"Found font configuration, applying...");
+            KettuTweakLog(@"Found font configuration, applying...");
             patchFonts(fontDict[@"main"], fontDict[@"name"]);
         }
     }
 
     if (bundle)
     {
-        BTLoaderLog(@"Executing JS bundle");
+        KettuTweakLog(@"Executing JS bundle");
         %orig(bundle, source, async);
     }
 
@@ -189,7 +189,7 @@ id                    gBridge        = nil;
             {
                 if ([[fileURL pathExtension] isEqualToString:@"js"])
                 {
-                    BTLoaderLog(@"Executing preload JS file %@", fileURL.absoluteString);
+                    KettuTweakLog(@"Executing preload JS file %@", fileURL.absoluteString);
                     NSData *data = [NSData dataWithContentsOfURL:fileURL];
                     if (data)
                     {
@@ -200,7 +200,7 @@ id                    gBridge        = nil;
         }
         else
         {
-            BTLoaderLog(@"Error reading contents of preloads directory");
+            KettuTweakLog(@"Error reading contents of preloads directory");
         }
     }
 
@@ -249,33 +249,33 @@ id                    gBridge        = nil;
         isJailbroken             = [[NSFileManager defaultManager] fileExistsAtPath:install_prefix];
 
         NSString *bundlePath =
-            [NSString stringWithFormat:@"%@/Library/Application Support/BTLoaderResources.bundle",
+            [NSString stringWithFormat:@"%@/Library/Application Support/KettuTweakResources.bundle",
                                        install_prefix];
-        BTLoaderLog(@"Is jailbroken: %d", isJailbroken);
-        BTLoaderLog(@"Bundle path for jailbroken: %@", bundlePath);
+        KettuTweakLog(@"Is jailbroken: %d", isJailbroken);
+        KettuTweakLog(@"Bundle path for jailbroken: %@", bundlePath);
 
         NSString *jailedPath = [[NSBundle mainBundle].bundleURL.path
-            stringByAppendingPathComponent:@"BTLoaderResources.bundle"];
-        BTLoaderLog(@"Bundle path for jailed: %@", jailedPath);
+            stringByAppendingPathComponent:@"KettuTweakResources.bundle"];
+        KettuTweakLog(@"Bundle path for jailed: %@", jailedPath);
 
-        btloaderPatchesBundlePath = isJailbroken ? bundlePath : jailedPath;
-        BTLoaderLog(@"Selected bundle path: %@", btloaderPatchesBundlePath);
+        KettuTweakPatchesBundlePath = isJailbroken ? bundlePath : jailedPath;
+        KettuTweakLog(@"Selected bundle path: %@", KettuTweakPatchesBundlePath);
 
         BOOL bundleExists =
-            [[NSFileManager defaultManager] fileExistsAtPath:btloaderPatchesBundlePath];
-        BTLoaderLog(@"Bundle exists at path: %d", bundleExists);
+            [[NSFileManager defaultManager] fileExistsAtPath:KettuTweakPatchesBundlePath];
+        KettuTweakLog(@"Bundle exists at path: %d", bundleExists);
 
         NSError *error = nil;
         NSArray *bundleContents =
-            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:btloaderPatchesBundlePath
+            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:KettuTweakPatchesBundlePath
                                                                 error:&error];
         if (error)
         {
-            BTLoaderLog(@"Error listing bundle contents: %@", error);
+            KettuTweakLog(@"Error listing bundle contents: %@", error);
         }
         else
         {
-            BTLoaderLog(@"Bundle contents: %@", bundleContents);
+            KettuTweakLog(@"Bundle contents: %@", bundleContents);
         }
 
         pyoncordDirectory = getPyoncordDirectory();

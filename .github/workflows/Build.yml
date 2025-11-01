@@ -100,7 +100,7 @@ jobs:
       - name: Upload DEB
         uses: actions/upload-artifact@v4
         with:
-          name: btloader-deb
+          name: KettuTweak-deb
           path: |
             *-arm64.deb
             packages/*-arm64.deb
@@ -210,9 +210,9 @@ jobs:
           if [ "${{ github.event.inputs.icon_choice }}" = "bound_icon" ]; then
             # Try multiple icon sources in case one fails
             for url in \
-              "https://raw.githubusercontent.com/CloudySn0w/BTLoader/main/assets/logo/icon.png" \
-              "https://github.com/CloudySn0w/BTLoader/raw/main/assets/logo/icon.png" \
-              "https://raw.githubusercontent.com/CloudySn0w/BTLoader/bd527e2/assets/logo/icon.png"
+              "https://raw.githubusercontent.com/CloudySn0w/KettuTweak/main/assets/logo/icon.png" \
+              "https://github.com/CloudySn0w/KettuTweak/raw/main/assets/logo/icon.png" \
+              "https://raw.githubusercontent.com/CloudySn0w/KettuTweak/bd527e2/assets/logo/icon.png"
             do
               echo "Trying icon source: $url"
               if curl -L -o bound_icon.png "$url" && [ -s bound_icon.png ]; then
@@ -331,20 +331,20 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name || format('v{0}', needs.build-ipas.outputs.discord_version) }}
-          name: ${{ github.event.inputs.release_name || format('BTLoader v{0} (Discord v{1})', needs.build-ipas.outputs.tweak_version, needs.build-ipas.outputs.discord_version) }}
+          name: ${{ github.event.inputs.release_name || format('KettuTweak v{0} (Discord v{1})', needs.build-ipas.outputs.tweak_version, needs.build-ipas.outputs.discord_version) }}
           body: |
             ${{ github.event.inputs.release_body }}
             
             ## Downloads
             
-            - **bound.ipa**: BTLoader with Bound name and icon
-            - **discord.ipa**: BTLoader with original Discord name and icon
+            - **bound.ipa**: KettuTweak with Bound name and icon
+            - **discord.ipa**: KettuTweak with original Discord name and icon
             - **DEB**: Rootless package for jailbroken devices
             
             ## Versions
             
             - Discord: v${{ needs.build-ipas.outputs.discord_version }}
-            - BTLoader: v${{ needs.build-ipas.outputs.tweak_version }}
+            - KettuTweak: v${{ needs.build-ipas.outputs.tweak_version }}
             
             ## Features
             

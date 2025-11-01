@@ -15,7 +15,7 @@
 
 - (BOOL)loadConfig {
     NSURL *loaderConfigUrl = [getPyoncordDirectory() URLByAppendingPathComponent:@"loader.json"];
-    BTLoaderLog(@"Attempting to load config from: %@", loaderConfigUrl.path);
+    KettuTweakLog(@"Attempting to load config from: %@", loaderConfigUrl.path);
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:loaderConfigUrl.path]) {
         NSError *error     = nil;
@@ -23,7 +23,7 @@
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
 
         if (error) {
-            BTLoaderLog(@"Error parsing loader config: %@", error);
+            KettuTweakLog(@"Error parsing loader config: %@", error);
             return NO;
         }
 
@@ -37,14 +37,14 @@
                 }
             }
 
-            BTLoaderLog(@"Loader config loaded - Custom URL %@: %@",
+            KettuTweakLog(@"Loader config loaded - Custom URL %@: %@",
                      self.customLoadUrlEnabled ? @"enabled" : @"disabled",
                      self.customLoadUrl.absoluteString);
             return YES;
         }
     }
 
-    BTLoaderLog(@"Using default loader config: %@", self.customLoadUrl.absoluteString);
+    KettuTweakLog(@"Using default loader config: %@", self.customLoadUrl.absoluteString);
     return NO;
 }
 
@@ -56,7 +56,7 @@
 }
 
 + (instancetype)getLoaderConfig {
-    BTLoaderLog(@"Getting loader config");
+    KettuTweakLog(@"Getting loader config");
 
     NSURL *loaderConfigUrl = [getPyoncordDirectory() URLByAppendingPathComponent:@"loader.json"];
 
@@ -79,7 +79,7 @@
         }
     }
 
-    BTLoaderLog(@"Couldn't get loader config");
+    KettuTweakLog(@"Couldn't get loader config");
     return [LoaderConfig defaultConfig];
 }
 

@@ -72,11 +72,11 @@ NSMutableDictionary<NSString *, NSString *> *fontMap;
 
 void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontDefName)
 {
-    BTLoaderLog(@"patchFonts called with fonts: %@ and def name: %@", mainFonts, fontDefName);
+    KettuTweakLog(@"patchFonts called with fonts: %@ and def name: %@", mainFonts, fontDefName);
 
     if (!fontMap)
     {
-        BTLoaderLog(@"Creating new fontMap");
+        KettuTweakLog(@"Creating new fontMap");
         fontMap = [NSMutableDictionary dictionary];
     }
 
@@ -86,13 +86,13 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
                           error:nil];
     if (fontJson)
     {
-        BTLoaderLog(@"Found existing fonts.json: %@", fontJson);
+        KettuTweakLog(@"Found existing fonts.json: %@", fontJson);
     }
 
     for (NSString *fontName in mainFonts)
     {
         NSString *url = mainFonts[fontName];
-        BTLoaderLog(@"Replacing font %@ with URL: %@", fontName, url);
+        KettuTweakLog(@"Replacing font %@ with URL: %@", fontName, url);
 
         NSURL    *fontURL       = [NSURL URLWithString:url];
         NSString *fontExtension = fontURL.pathExtension;
@@ -110,7 +110,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
         NSURL *parentDir = [fontCachePath URLByDeletingLastPathComponent];
         if (![[NSFileManager defaultManager] fileExistsAtPath:parentDir.path])
         {
-            BTLoaderLog(@"Creating parent directory: %@", parentDir.path);
+            KettuTweakLog(@"Creating parent directory: %@", parentDir.path);
             [[NSFileManager defaultManager] createDirectoryAtURL:parentDir
                                      withIntermediateDirectories:YES
                                                       attributes:nil
@@ -119,11 +119,11 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
 
         if (![[NSFileManager defaultManager] fileExistsAtPath:fontCachePath.path])
         {
-            BTLoaderLog(@"Downloading font %@ from %@", fontName, url);
+            KettuTweakLog(@"Downloading font %@ from %@", fontName, url);
             NSData *data = [NSData dataWithContentsOfURL:fontURL];
             if (data)
             {
-                BTLoaderLog(@"Writing font data to: %@", fontCachePath.path);
+                KettuTweakLog(@"Writing font data to: %@", fontCachePath.path);
                 [data writeToURL:fontCachePath atomically:YES];
             }
         }
@@ -131,7 +131,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
         NSData *fontData = [NSData dataWithContentsOfURL:fontCachePath];
         if (fontData)
         {
-            BTLoaderLog(@"Registering font %@ with provider", fontName);
+            KettuTweakLog(@"Registering font %@ with provider", fontName);
             CGDataProviderRef provider =
                 CGDataProviderCreateWithCFData((__bridge CFDataRef) fontData);
             CGFontRef font = CGFontCreateWithDataProvider(provider);
@@ -146,7 +146,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
                     CFErrorRef unregisterError = NULL;
                     if (!CTFontManagerUnregisterGraphicsFont(font, &unregisterError))
                     {
-                        BTLoaderLog(@"Failed to deregister font %@: %@",
+                        KettuTweakLog(@"Failed to deregister font %@: %@",
                                  (__bridge NSString *) postScriptName,
                                  unregisterError
                                      ? (__bridge NSString *) CFErrorCopyDescription(unregisterError)
@@ -161,7 +161,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
                 if (CTFontManagerRegisterGraphicsFont(font, &error))
                 {
                     fontMap[fontName] = (__bridge NSString *) postScriptName;
-                    BTLoaderLog(@"Successfully registered font %@ to %@", fontName,
+                    KettuTweakLog(@"Successfully registered font %@ to %@", fontName,
                              (__bridge NSString *) postScriptName);
 
                     NSError *jsonError;
@@ -180,7 +180,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
                     NSString *errorDesc = error
                                               ? (__bridge NSString *) CFErrorCopyDescription(error)
                                               : @"Unknown error";
-                    BTLoaderLog(@"Failed to register font %@: %@", fontName, errorDesc);
+                    KettuTweakLog(@"Failed to register font %@: %@", fontName, errorDesc);
                     if (error)
                         CFRelease(error);
                 }
@@ -198,7 +198,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
     @autoreleasepool
     {
         fontMap = [NSMutableDictionary dictionary];
-        BTLoaderLog(@"Font hooks initialized");
+        KettuTweakLog(@"Font hooks initialized");
         %init;
     }
 }

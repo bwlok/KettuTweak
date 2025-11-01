@@ -4,17 +4,17 @@ INSTALL_TARGET_PROCESSES = Discord
 THEOS_PACKAGE_SCHEME = rootless
 FINALPACKAGE = 1
 
-include /home/cocobo1/theos/makefiles/common.mk
+include $(theos)/makefiles/common.mk
 
 TWEAK_NAME = KettuTweak
 BUNDLE_NAME = KettuTweakResources
 
-BTLoader_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
-BTLoader_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers
-BTLoader_FRAMEWORKS = Foundation UIKit CoreGraphics CoreText CoreFoundation UniformTypeIdentifiers
+KettuTweak_FILES = $(wildcard Sources/*.x Sources/*.m Sources/**/*.x Sources/**/*.m)
+KettuTweak_CFLAGS = -fobjc-arc -DPACKAGE_VERSION='@"$(THEOS_PACKAGE_BASE_VERSION)"' -I$(THEOS_PROJECT_DIR)/Headers
+KettuTweak_FRAMEWORKS = Foundation UIKit CoreGraphics CoreText CoreFoundation UniformTypeIdentifiers
 
-BTLoaderResources_INSTALL_PATH = "/Library/Application\ Support/"
-BTLoaderResources_RESOURCE_DIRS = Resources
+KettuTweakResources_INSTALL_PATH = "/Library/Application\ Support/"
+KettuTweakResources_RESOURCE_DIRS = Resources
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS_MAKE_PATH)/bundle.mk

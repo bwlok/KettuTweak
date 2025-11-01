@@ -238,7 +238,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                  NSURLSession *session);
 
 void showBundleSelector(UIViewController *presenter) {
-    BTLoaderLog(@"Starting bundle selector...");
+    KettuTweakLog(@"Starting bundle selector...");
 
     UIAlertController *loadingAlert =
         [UIAlertController alertControllerWithTitle:@"Loading"
@@ -250,7 +250,7 @@ void showBundleSelector(UIViewController *presenter) {
     NSURLSession *session = [NSURLSession
         sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
-    BTLoaderLog(@"Fetching branches from: %@", url);
+    KettuTweakLog(@"Fetching branches from: %@", url);
 
     [[session
           dataTaskWithURL:url
@@ -314,7 +314,7 @@ void showBundleSelector(UIViewController *presenter) {
 
 static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                  NSURLSession *session) {
-    BTLoaderLog(@"Fetching commits for branch: %@", branch);
+    KettuTweakLog(@"Fetching commits for branch: %@", branch);
 
     UIAlertController *loadingCommits =
         [UIAlertController alertControllerWithTitle:@"Loading"
@@ -412,7 +412,7 @@ void removeCachedBundle(void) {
         removeItemAtURL:[getPyoncordDirectory() URLByAppendingPathComponent:@"bundle.js"]
                   error:&error];
     if (error) {
-        BTLoaderLog(@"Failed to remove cached bundle: %@", error);
+        KettuTweakLog(@"Failed to remove cached bundle: %@", error);
     }
 }
 
