@@ -4,7 +4,7 @@ INSTALL_TARGET_PROCESSES = Discord
 THEOS_PACKAGE_SCHEME = rootless
 FINALPACKAGE = 1
 
-include $(theos)/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = KettuTweak
 BUNDLE_NAME = KettuTweakResources
