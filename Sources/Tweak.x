@@ -293,6 +293,7 @@ id                    gBridge        = nil;
 
         NSString *install_prefix = @"/var/jb";
         isJailbroken             = [[NSFileManager defaultManager] fileExistsAtPath:install_prefix];
+        BOOL jbPathExists = [[NSFileManager defaultManager] fileExistsAtPath:install_prefix];
 
         NSString *bundlePath =
             [NSString stringWithFormat:@"%@/Library/Application Support/KettuTweakResources.bundle",
@@ -311,17 +312,58 @@ id                    gBridge        = nil;
             [[NSFileManager defaultManager] fileExistsAtPath:KettuTweakPatchesBundlePath];
         KettuTweakLog(@"Bundle exists at path: %d", bundleExists);
 
-        NSError *error = nil;
-        NSArray *bundleContents =
-            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:KettuTweakPatchesBundlePath
-                                                                error:&error];
-        if (error)
+
+        if (jbPathExists)
         {
-            KettuTweakLog(@"Error listing bundle contents: %@", error);
+            KettuTweakLog(@"Jailbreak path exists, attempting to load bundle from: %@", bundlePath);
+
+            BOOL bundleExists = [[NSFileManager defaultManager] fileExistsAtPath:bundlePath];
+            NSBundle *testBundle = [NSBundle bundleWithPath:bundlePath];
+
+            if (bundleExists && testBundle)
+            {
+                KettuTweakPatchesBundlePath = bundlePath;
+                KettuTweakLog(@"Successfully loaded bundle from jailbroken path");
+            }
+            else
+            {
+                KettuTweakLog(@"Bundle not found or invalid at jailbroken path, falling back to jailed");
+                KettuTweakPatchesBundlePath = jailedPath;
+            }
         }
         else
         {
-            KettuTweakLog(@"Bundle contents: %@", bundleContents);
+            KettuTweakLog(@"Not jailbroken, using jailed bundle path");
+            KettuTweakPatchesBundlePath = jailedPath;
+        }
+
+        KettuTweakLog(@"Selected bundle path: %@", KettuTweakPatchesBundlePath);
+
+        NSBundle *KettuTweakPatchesBundle = [NSBundle bundleWithPath:KettuTweakPatchesBundlePath];
+        if (!KettuTweakPatchesBundle)
+        {
+            KettuTweakLog(@"Failed to load KettuTweakPatches bundle from any path");
+            KettuTweakLog(@"  Jailbroken path: %@", bundlePath);
+            KettuTweakLog(@"  Jailed path: %@", jailedPath);
+            KettuTweakLog(@"  /var/jb exists: %d", jbPathExists);
+
+            KettuTweakPatchesBundlePath = nil;
+        }
+        else
+        {
+            KettuTweakLog(@"Bundle loaded successfully");
+            NSError *error = nil;
+            NSArray *bundleContents =
+                [[NSFileManager defaultManager] contentsOfDirectoryAtPath:KettuTweakPatchesBundlePath
+                                                                    error:&error];
+            if (error)
+            {
+                KettuTweakLog(@"Error listing bundle contents: %@", error);
+            }
+            else
+            {
+                KettuTweakLog(@"Bundle contents: %@", bundleContents);
+            }
         }
 
         pyoncordDirectory = getPyoncordDirectory();
